@@ -21,18 +21,24 @@
       :key="item.id" 
       :style="item.style"
       ref="draggableItems"
-      class="draggable"
+      :class="['draggable', { 'is-active': currentDraggingIndex === index }]"
       @mousedown="startDragging(index, $event)"
       @mouseup="stopDragging"
-      @mousemove="drag(index, $event)">
-
-      <img :src="item.image" :alt="item.title" />
+      @mousemove="drag(index, $event)"
+      @mouseleave="stopDragging"
+      >
+      <div class="item-content">
+        <img :src="item.image" :alt="item.title" style="width: 50px;" draggable="false"/>
+        <CloseCircleOutlined @click="removeCharm(index)" class="close-button"/>
+      </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
 import { ref } from 'vue';
+
+import { CloseCircleOutlined } from '@ant-design/icons-vue';
 
 const charmData = [
   { id: 'charm01', title: 'Charm01', price: 3.0, image: 'https://shophart.com/cdn/shop/files/Oui-Front_1_00b32af6-41f4-43c0-acce-4de9184e4fa3_large.png?v=1723141246' },
@@ -63,13 +69,40 @@ function addCharm (index: number) {
       top: '0px',
     }
   };
+
   selectedCharms.value.push(newCharm);
 }
 
 function startDragging (index: number, event: DragEvent) {
+  // 드래그가 시작될 때 해당 아이템을 배열의 끝으로 이동
+  const item = selectedCharms.value.splice(index, 1)[0];
+  selectedCharms.value.push(item);
+
+  // 드래그 중인 아이템의 인덱스를 현재 배열의 마지막 요소로 설정
   isDragging.value = true;
-  currentDraggingIndex.value = index
+  currentDraggingIndex.value = selectedCharms.value.length - 1;
+
+  // window 레벨에서 mousemove와 mouseup 이벤트를 추가
+  // window.addEventListener('mousemove', handleMouseMove);
+  // window.addEventListener('mouseup', stopDragging);
 }
+
+
+const handleMouseMove = (event: MouseEvent) => {
+  if (isDragging.value && currentDraggingIndex.value !== null) {
+    const newX = event.clientX - event.target.offsetWidth / 2;
+    const newY = event.clientY - event.target.offsetHeight / 2;
+    
+    selectedCharms.value[currentDraggingIndex.value].style.left = `${newX}px`;
+    selectedCharms.value[currentDraggingIndex.value].style.top = `${newY}px`;
+  }
+};
+
+// 아이템 삭제 함수
+function removeCharm (index: number) {
+  selectedCharms.value.splice(index, 1);
+}
+
 function drag (index: number, event: DragEvent) {
   if (isDragging.value && currentDraggingIndex.value === index) {
     const newX = event.clientX - event.target.offsetWidth / 2;
@@ -83,6 +116,10 @@ function drag (index: number, event: DragEvent) {
 function stopDragging () {
   isDragging.value = false;
   currentDraggingIndex.value = undefined;
+
+  // 드래그가 끝났을 때 window 레벨의 이벤트 제거
+  // window.removeEventListener('mousemove', handleMouseMove);
+  // window.removeEventListener('mouseup', stopDragging);
 }
 </script>
 
@@ -92,4 +129,33 @@ function stopDragging () {
   height: 100vh;
   background-color: #d9d9d9;
 }
+
+.draggable {
+  border: 2px solid transparent;
+  cursor: pointer;
+  border-radius: 10px;
+  overflow: hidden;
+
+  &:hover {
+    border: 2px dotted #d9d9d9;
+  }
+
+  &.is-active {
+    border: 2px dotted red;
+  }
+
+  .item-content {
+    // border: 1px solid blue;
+    position: relative;
+  }
+  .close-button {
+    position: absolute;
+    top: -10px; right: -10px;
+    background: #FFF;
+    padding: 3px;
+    border-radius: 50%;
+    color: #d9d9d9;
+  }
+}
+
 </style>

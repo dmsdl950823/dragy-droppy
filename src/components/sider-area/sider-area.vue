@@ -1,8 +1,12 @@
 <template>
   <div class="sider-area">
-    <ARow :gutter="[10, 10]" justify="space-around" align="middle">
+    <ARow
+      :gutter="[10, 10]"
+      justify="space-around"
+      align="middle"
+    >
       <ACol
-        v-for="item in props.data"
+        v-for="item in itemList"
         :key="item.id"
       >
         <CardItem
@@ -14,23 +18,57 @@
         />
       </ACol>
     </ARow>
-
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
-import CardItem from './card-item/card-item.vue';
+import { computed, inject } from 'vue'
+import CardItem from './card-item/card-item.vue'
 import type { CardItemType } from './card-item/card-item.type';
 import type { SiderAreaProps } from "./sider-area.type"
+import { useResult, type CharmItemType } from "@/composables/use-result"
+import { type CurrentStepProviderModel, CURRENT_STEP_KEY } from "../../views/home-view/home-view.type"
 
-const props = withDefaults(defineProps<SiderAreaProps>(), {
-  data: []
+
+const { setChainOption, setCharmOptionList } = useResult()
+
+const injected = inject<CurrentStepProviderModel>(CURRENT_STEP_KEY)
+if (!injected) {
+  console.error('CURRENT_STEP_KEY is Empty!')
+}
+
+const props = defineProps<SiderAreaProps>()
+const itemList = computed<CardItemType[]>(() => {
+  if (!props.data) return []
+  return props.data
 })
-
 
 function handleClickEvent (item: CardItemType) {
   console.log(item)
+
+  if (!injected) return
+  if (injected.currentStep.value === 0) {
+    setChainOption(item)
+  }
+  
+  if (injected.currentStep.value === 1) {
+    addCharm(item)
+  }
+}
+
+
+// 아이템의 포지션과 offset 저장
+function addCharm (item: CardItemType) {
+  const newCharm: CharmItemType = {
+    ...item,
+    style: {
+      position: 'absolute',
+      left: '0px',
+      top: '0px',
+    }
+  };
+
+  setCharmOptionList(newCharm);
 }
 </script>
 

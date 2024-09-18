@@ -1,11 +1,11 @@
 <template>
-
-<div class="charm-list">
+  <div class="charm-list">
     <button 
       v-for="(charm, index) in charmData" 
       :key="charm.id" 
       @click="addCharm(index)"
-      class="charm-button">
+      class="charm-button"
+    >
       {{ charm.title }}
     </button>
   </div>
@@ -26,10 +26,18 @@
       @mouseup="stopDragging"
       @mousemove="drag(index, $event)"
       @mouseleave="stopDragging"
-      >
+    >
       <div class="item-content">
-        <img :src="item.image" :alt="item.title" style="width: 50px;" draggable="false"/>
-        <CloseCircleOutlined @click="removeCharm(index)" class="close-button"/>
+        <img
+          :src="item.image"
+          :alt="item.title"
+          style="width: 50px;"
+          draggable="false"
+        >
+        <CloseCircleOutlined
+          @click="removeCharm(index)"
+          class="close-button"
+        />
       </div>
     </div>
   </div>

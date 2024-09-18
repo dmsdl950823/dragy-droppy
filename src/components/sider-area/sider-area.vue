@@ -1,6 +1,9 @@
 <template>
   <div class="sider-area">
+    <ReceiptComponent v-if="showReceipt" />
+
     <ARow
+      v-else
       :gutter="[10, 10]"
       justify="space-around"
       align="middle"
@@ -29,6 +32,7 @@ import type { SiderAreaProps } from "./sider-area.type"
 import { useResult, type CharmItemType } from "@/composables/use-result"
 import { type CurrentStepProviderModel, CURRENT_STEP_KEY } from "../../views/home-view/home-view.type"
 import { cloneDeep } from "lodash-es"
+import ReceiptComponent from '../receipt-component/receipt-component.vue';
 
 
 const { setChainOption, setCharmOptionList } = useResult()
@@ -43,6 +47,9 @@ const itemList = computed<CardItemType[]>(() => {
   if (!props.data) return []
   return props.data
 })
+
+const showReceipt = computed<boolean>(() => injected?.currentStep.value === 2)
+
 
 function handleClickEvent (item: CardItemType) {
   console.log(item)

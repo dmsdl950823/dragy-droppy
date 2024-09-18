@@ -1,6 +1,7 @@
 import type { CardItemType } from "@/components/sider-area/card-item/card-item.type"
 import { ref } from "vue"
 import { cloneDeep } from "lodash-es"
+import { type AccessoryType } from "@/components/accessory-type-list/accessory-type-list.type"
 
 export interface CharmItemType extends CardItemType {
   style?: {
@@ -14,8 +15,13 @@ export interface CharmItemType extends CardItemType {
   }
 }
 
+const accessoryTypeOption = ref<AccessoryType | null>(null)
 const chainOption = ref<CardItemType | null>(null)
 const charmOptionList = ref<CardItemType[]>([])
+
+function setAccessoryTypeOption (type: AccessoryType) {
+  accessoryTypeOption.value = type
+}
 
 function setChainOption (selectedChain: CardItemType) {
   chainOption.value = cloneDeep(selectedChain)
@@ -28,8 +34,10 @@ function setCharmOptionList (charmItem: CharmItemType) {
 
 export function useResult () {
   return {
+    accessoryTypeOption,
     chainOption,
     charmOptionList,
+    setAccessoryTypeOption,
     setChainOption,
     setCharmOptionList
   }

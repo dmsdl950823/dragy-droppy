@@ -1,16 +1,29 @@
 <template>
   <div class="step-component">
-    <ASteps
-      :current="currentStep"
-      :items="stepList"
-    />
+    <div class="step-component__steps">
+      <ASteps
+        :current="currentStep"
+        :items="stepList"
+      />
+    </div>
 
     <article class="step-component__content">
-      <slot />
+      <slot
+        name="step0"
+        v-if="showAccessoryType"
+      />
+      <slot
+        name="step1"
+        v-else
+      />
     </article>
 
 
-    <AFlex gap="small" align="center" justify="center">
+    <AFlex
+      gap="small"
+      align="center"
+      justify="center"
+    >
       <AButton
         type="primary"
         size="large"
@@ -40,13 +53,15 @@
 
   const currentStep = ref<number>(0)
   const stepList = ref<StepType[]>([
+    { title: 'Type' },
     { title: 'Chain' },
     { title: 'Charm' },
     { title: 'Result' },
   ])
 
+  const showAccessoryType = computed<boolean>(() => currentStep.value === 0)
   const isDisabledPrevious = computed<boolean>(() => currentStep.value === 0)
-  const isDisabledNext = computed<boolean>(() => currentStep.value === 2)
+  const isDisabledNext = computed<boolean>(() => currentStep.value === 3)
 
   function handlePreviousStepEvent () {
     currentStep.value = currentStep.value -= 1
@@ -60,11 +75,15 @@
 
 <style scoped lang="scss">
 .step-component {
+  &__steps {
+    width: 800px;
+    margin: 40px auto;
+  }
 
   &__content {
-    border: 1px solid lawngreen;
     display: flex;
     align-items: center;
+    margin-bottom: 40px;
   }
 }
 </style>

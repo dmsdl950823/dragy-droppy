@@ -64,17 +64,17 @@ const itemList = computed<CardItemType[]>(() => {
   return props.data
 })
 
-const showReceipt = computed<boolean>(() => injected?.currentStep.value === 2)
+const showReceipt = computed<boolean>(() => injected?.currentStep.value === 3)
 
 
 function handleClickEvent (item: CardItemType) {
   if (!injected) return
 
-  if (injected.currentStep.value === 0) {
+  if (injected.currentStep.value === 1) {
     setChainOption(item)
   }
   
-  if (injected.currentStep.value === 1) {
+  if (injected.currentStep.value === 2) {
     addCharm(item)
   }
 }
@@ -89,7 +89,7 @@ function addCharm (item: CardItemType) {
       left: '50%',
       top: '50%',
     },
-    ratio: { // 상대적 비율 저장
+    ratio: {
       left: 0,
       top: 0,
     }

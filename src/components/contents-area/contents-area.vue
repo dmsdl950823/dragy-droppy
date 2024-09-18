@@ -1,5 +1,15 @@
 <template>
+  <AEmpty
+    class="empty-area"
+    v-if="isEmpty"
+  >
+    <template #description>
+      Select Chain First!
+    </template>
+  </AEmpty>
+    
   <div
+    v-else
     class="contents-area"
     ref="contentsArea"
     @dragover.prevent
@@ -48,9 +58,9 @@ import { computed, ref, inject, onMounted, onBeforeUnmount, watch } from 'vue';
 import { useResult } from '@/composables/use-result'
 import { CloseCircleOutlined } from '@ant-design/icons-vue';
 import { type CurrentStepProviderModel, CURRENT_STEP_KEY } from "../../views/home-view/home-view.type"
+import { isNil } from 'lodash-es';
 
 const { chainOption, charmOptionList: selectedCharms } = useResult()
-
 
 const injected = inject<CurrentStepProviderModel>(CURRENT_STEP_KEY)
 if (!injected) {
@@ -62,7 +72,8 @@ const contentsArea = ref<HTMLElement>()
 const currentDraggingIndex = ref<number>();
 const originalSizes = ref({ width: 0, height: 0 });
 
-const isReadOnly = computed<boolean>(() => injected?.currentStep.value === 2)
+const isReadOnly = computed<boolean>(() => injected?.currentStep.value === 3)
+const isEmpty = computed<boolean>(() => isNil(chainOption.value))
 const chainOptionImage = computed<string>(() => {
   if (chainOption.value === null) return ''
   return chainOption.value.image
@@ -135,8 +146,6 @@ function globalMouseUpHandler () {
 function handleResize () {
   if (!contentsArea.value) return
   
-  const rect = contentsArea.value.getBoundingClientRect();
-
   const newWidth = contentsArea.value.offsetWidth;
   const newHeight = contentsArea.value.offsetHeight;
 
@@ -166,6 +175,17 @@ onBeforeUnmount(() => {
 </script>
 
 <style scoped lang="scss">
+.empty-area {
+  flex: 1 1 auto;
+  height: 100vh;
+  background-color: #ececec;
+  display: flex;
+  align-content: center;
+  justify-content: center;
+  flex-direction: column;
+  margin: 0;
+}
+
 .contents-area {
   flex: 1 1 auto;
   height: 100vh;

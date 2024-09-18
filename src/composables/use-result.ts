@@ -8,6 +8,10 @@ export interface CharmItemType extends CardItemType {
     top: string
     left: string
   }
+  ratio?: {
+    top: number
+    left: number
+  }
 }
 
 const chainOption = ref<CardItemType | null>(null)

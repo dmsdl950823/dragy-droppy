@@ -13,7 +13,6 @@
       >
     </div>
 
-    {{ isReadOnly }}
     <div 
       v-for="(item, index) in selectedCharms" 
       :key="item.id" 
@@ -61,6 +60,7 @@ if (!injected) {
 const isDragging = ref<boolean>(false);
 const contentsArea = ref<HTMLElement>()
 const currentDraggingIndex = ref<number>();
+const originalSizes = ref({ width: 0, height: 0 });
 
 const isReadOnly = computed<boolean>(() => injected?.currentStep.value === 2)
 const chainOptionImage = computed<string>(() => {
@@ -106,6 +106,9 @@ function handleMouseMoveEvent (index: number, event: DragEvent) {
       if (newY + itemRect.height > rect.height) newY = rect.height - itemRect.height;
 
 
+      selectedCharms.value[currentDraggingIndex.value].ratio.left = newX / rect.width;
+      selectedCharms.value[currentDraggingIndex.value].ratio.top = newY / rect.height;
+
       selectedCharms.value[currentDraggingIndex.value].style.left = `${newX}px`;
       selectedCharms.value[currentDraggingIndex.value].style.top = `${newY}px`;
   }
@@ -129,12 +132,35 @@ function globalMouseUpHandler () {
   handleStopDragging();
 }
 
+function handleResize () {
+  if (!contentsArea.value) return
+  
+  const rect = contentsArea.value.getBoundingClientRect();
+
+  const newWidth = contentsArea.value.offsetWidth;
+  const newHeight = contentsArea.value.offsetHeight;
+
+  // 각 아이템의 상대적 비율에 따라 위치를 다시 설정
+  selectedCharms.value.forEach(item => {
+    const newLeft = item.ratio.left * newWidth;
+    const newTop = item.ratio.top * newHeight;
+
+    item.style.left = `${newLeft}px`;
+    item.style.top = `${newTop}px`;
+  });
+
+  originalSizes.value.width = newWidth;
+  originalSizes.value.height = newHeight;
+}
+
 onMounted(() => {
   window.addEventListener('mouseup', globalMouseUpHandler);
+  window.addEventListener('resize', handleResize);
 });
 
 onBeforeUnmount(() => {
   window.removeEventListener('mouseup', globalMouseUpHandler);
+  window.removeEventListener('resize', handleResize);
 });
 
 </script>

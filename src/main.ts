@@ -1,5 +1,6 @@
 import './assets/reset.css'
 import './assets/main.css'
+import './assets/variables.scss'
 import 'ant-design-vue/dist/reset.css';
 import 'vue3-perfect-scrollbar/style.css';
 

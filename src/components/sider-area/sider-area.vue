@@ -28,6 +28,7 @@ import type { CardItemType } from './card-item/card-item.type';
 import type { SiderAreaProps } from "./sider-area.type"
 import { useResult, type CharmItemType } from "@/composables/use-result"
 import { type CurrentStepProviderModel, CURRENT_STEP_KEY } from "../../views/home-view/home-view.type"
+import { cloneDeep } from "lodash-es"
 
 
 const { setChainOption, setCharmOptionList } = useResult()
@@ -60,11 +61,11 @@ function handleClickEvent (item: CardItemType) {
 // 아이템의 포지션과 offset 저장
 function addCharm (item: CardItemType) {
   const newCharm: CharmItemType = {
-    ...item,
+    ...cloneDeep(item),
     style: {
       position: 'absolute',
-      left: '0px',
-      top: '0px',
+      left: '50%',
+      top: '50%',
     }
   };
 

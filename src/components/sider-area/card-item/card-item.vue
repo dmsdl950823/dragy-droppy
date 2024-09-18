@@ -1,5 +1,8 @@
 <template>
-  <ACard hoverable class="card-item">
+  <ACard
+    hoverable
+    class="card-item"
+  >
     <template #cover>
       <img :alt="props.title" :src="props.image" />
       <!-- <ASkeletonImage /> -->
@@ -21,7 +24,6 @@ const props = withDefaults(defineProps<CardItemType>(), {
   price: 0,
   image: '-'
 })
-
 </script>
 
 <style scoped lang="scss">

@@ -34,7 +34,9 @@
 
 <script setup lang="ts">
   import { computed, ref } from 'vue';
-  import { type StepType } from "./step-component.type"
+  import type { StepType, StepComponentEmits } from "./step-component.type"
+  
+  const emits = defineEmits<StepComponentEmits>()
 
   const currentStep = ref<number>(0)
   const stepList = ref<StepType[]>([
@@ -48,9 +50,11 @@
 
   function handlePreviousStepEvent () {
     currentStep.value = currentStep.value -= 1
+    emits('change', currentStep.value)
   }
   function handleNextStepEvent () {
     currentStep.value = currentStep.value += 1
+    emits('change', currentStep.value)
   }
 </script>
 

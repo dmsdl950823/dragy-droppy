@@ -54,7 +54,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref, inject, onMounted, onBeforeUnmount, watch } from 'vue';
+import { computed, ref, inject, onMounted, onBeforeUnmount } from 'vue';
 import { useResult } from '@/composables/use-result'
 import { CloseCircleOutlined } from '@ant-design/icons-vue';
 import { type CurrentStepProviderModel, CURRENT_STEP_KEY } from "../../views/home-view/home-view.type"
@@ -145,7 +145,7 @@ function globalMouseUpHandler () {
 
 function handleResize () {
   if (!contentsArea.value) return
-  
+
   const newWidth = contentsArea.value.offsetWidth;
   const newHeight = contentsArea.value.offsetHeight;
 

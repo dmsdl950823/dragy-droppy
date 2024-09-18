@@ -17,7 +17,7 @@ export interface CharmItemType extends CardItemType {
 
 const accessoryTypeOption = ref<AccessoryType | null>(null)
 const chainOption = ref<CardItemType | null>(null)
-const charmOptionList = ref<CardItemType[]>([])
+const charmOptionList = ref<CharmItemType[]>([])
 
 function setAccessoryTypeOption (type: AccessoryType) {
   accessoryTypeOption.value = type

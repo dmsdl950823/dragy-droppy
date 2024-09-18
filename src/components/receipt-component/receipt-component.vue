@@ -80,7 +80,9 @@ const totalBudget = computed<string>(() => {
 })
 
 function handleOrderButton () {
-  const contentsArea = document.querySelector('.contents-area');
+  const contentsArea: HTMLElement | null = document.querySelector('.contents-area');
+
+  if (isNil(contentsArea)) return
   
   html2canvas(contentsArea, {
     useCORS: true, // CORS 문제를 피하기 위한 옵션
@@ -90,12 +92,6 @@ function handleOrderButton () {
     });
   });
 }
-
-
-// 스크린샷 다운로드 함수
-const downloadScreenshot = () => {
-};
-
 </script>
 
 <style scoped lang="scss">

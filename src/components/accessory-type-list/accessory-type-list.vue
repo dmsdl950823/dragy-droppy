@@ -36,8 +36,8 @@
 
 <script setup lang="ts">
 import { ref } from 'vue';
-import { type AccessoryItemType } from "./accessory-type-list.type.ts"
-import { useResult, type CharmItemType } from "@/composables/use-result"
+import { type AccessoryItemType } from "./accessory-type-list.type"
+import { useResult } from "@/composables/use-result"
 import { CheckCircleOutlined } from '@ant-design/icons-vue';
 import { isNil } from 'lodash-es';
 

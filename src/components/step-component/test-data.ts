@@ -1,5 +1,3 @@
-import { ref } from "vue";
-import type { CardItemType } from "../sider-area/card-item/card-item.type";
 
 export const chainData = [
   { id: 'chain01', title: 'Chain01', price: 13.0, image: 'https://cameronjewellery.co.nz/cdn/shop/products/B1_b109ec88-7110-4fec-93a1-a54a846ab66d.jpg?v=1637550555' },

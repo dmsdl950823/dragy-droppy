@@ -1,10 +1,12 @@
 <template>
   <ACard
     hoverable
+    :bordered="false"
     class="card-item"
   >
     <template #cover>
       <img
+        class="card-image"
         :alt="props.title"
         :src="props.image"
       >
@@ -33,6 +35,10 @@ const props = withDefaults(defineProps<CardItemType>(), {
 
 <style scoped lang="scss">
   .card-item {
-    width: 240px;
+    width: 220px;
+  }
+
+  .card-image {
+    aspect-ratio: 1;
   }
 </style>

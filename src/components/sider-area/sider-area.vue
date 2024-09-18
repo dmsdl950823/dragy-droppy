@@ -1,27 +1,32 @@
 <template>
-  <div class="sider-area">
-    <ReceiptComponent v-if="showReceipt" />
+  <PerfectScrollbar>
+    <div class="sider-area">
+      <ReceiptComponent
+        v-if="showReceipt"
+        :options="{ swipeEasing: true, wheelPropagation: true } "
+      />
 
-    <ARow
-      v-else
-      :gutter="[10, 10]"
-      justify="space-around"
-      align="middle"
-    >
-      <ACol
-        v-for="item in itemList"
-        :key="item.id"
+      <ARow
+        v-else
+        :gutter="[20, 20]"
+        justify="center"
+        align="middle"
       >
-        <CardItem
-          :id="item.id"
-          :title="item.title"
-          :price="item.price"
-          :image="item.image"
-          @click="handleClickEvent(item)"
-        />
-      </ACol>
-    </ARow>
-  </div>
+        <ACol
+          v-for="item in itemList"
+          :key="item.id"
+        >
+          <CardItem
+            :id="item.id"
+            :title="item.title"
+            :price="item.price"
+            :image="item.image"
+            @click="handleClickEvent(item)"
+          />
+        </ACol>
+      </ARow>
+    </div>
+  </PerfectScrollbar>
 </template>
 
 <script setup lang="ts">
@@ -33,6 +38,7 @@ import { useResult, type CharmItemType } from "@/composables/use-result"
 import { type CurrentStepProviderModel, CURRENT_STEP_KEY } from "../../views/home-view/home-view.type"
 import { cloneDeep } from "lodash-es"
 import ReceiptComponent from '../receipt-component/receipt-component.vue';
+import { PerfectScrollbar } from 'vue3-perfect-scrollbar';
 
 
 const { setChainOption, setCharmOptionList } = useResult()
@@ -82,10 +88,10 @@ function addCharm (item: CardItemType) {
 
 <style scoped lang="scss">
 .sider-area {
-  width: 500px;
+  width: 520px;
+  padding: 30px;
   // box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
   max-height: 100vh;
-  overflow-y: auto;
-  border-left: 1px solid skyblue;
+  // overflow-y: auto;
 }
 </style>
